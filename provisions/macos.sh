@@ -1,14 +1,22 @@
+set -x
 echo "Running provisioning script";
 id;
 df -h;
-brew update;
+time brew update;
 brew install node@12;
-npm install -g webdriver-manager;
-webdriver-manager update;
+echo 'export PATH="/usr/local/opt/node@12/bin:$PATH"' >> ~/.bash_profile
+export PATH="/usr/local/opt/node@12/bin:$PATH";
+
+brew install htop
+
 sudo safaridriver --enable;
-defaults write com.apple.Safari IncludeDevelopMenu 1
+defaults write com.apple.Safari IncludeDevelopMenu 1;
+
+brew cask install java;
 
 brew cask install firefox;
 brew cask install google-chrome;
+
+npm install -g webdriver-manager && webdriver-manager update;
 
 echo "Done provisioning script";

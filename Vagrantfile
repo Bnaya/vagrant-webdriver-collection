@@ -24,10 +24,15 @@ Vagrant.configure("2") do |config|
       # set resolution on OSX:
       # 0,1,2,3,4,5 :: 640x480, 800x600, 1024x768, 1280x1024, 1440x900, 1920x1200
       v.customize ["setextradata", :id, "VBoxInternal2/EfiGopMode", "4"]
-
+    end
 
     # NFS needs host-only network
     macos.vm.network "private_network", ip: "172.16.2.42"
+
+    # macos.vm.network :hostonly, "192.168.50.5"
+
+    macos.vm.network "forwarded_port", guest: 4444, host: 5444
+    # config.vm.network "public_network", bridge: "en1: Wi-Fi (AirPort)"
 
     # macos.vm.synced_folder ".", "/vagrant", disabled: true
     
@@ -38,11 +43,10 @@ Vagrant.configure("2") do |config|
       :mount_options => ['nolock,vers=3,udp,noatime,actimeo=1,resvport'],
       
     :export_options => ['async,insecure,no_subtree_check,no_acl,no_root_squash']
-    
-    macos.vm.provision "shell", path: "./provisions/macos.sh"
-    macos.vm.provision "shell", path: "./provisions/macosAlways.sh", run: 'always'
 
-    end
+
+    macos.vm.provision "shell", path: "./provisions/macos.sh", privileged: false
+    macos.vm.provision "shell", path: "./provisions/macosAlways.sh", privileged: false, run: 'always'
   end
 
 #   config.vm.provider "virtualbox" do |v|
