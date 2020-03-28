@@ -15,12 +15,11 @@ Vagrant.configure("2") do |config|
       v.cpus = 4
 
       v.customize ["modifyvm", :id, "--vram", "128"]
+      # NOT WORKING. how can i se resolution ??
+      # v.customize ["modifyvm", :id, "setvidmode", "1440 900 32 1"]
     end
 
     win10.vm.network "forwarded_port", guest: 4444, host: 6444
-
-
-
 
     # Enable auto login for powershell_elevated_interactive to work!
     # https://gist.github.com/StefanScherer/adbb421dc0adca75b49e0031a99595a5
@@ -36,9 +35,8 @@ Vagrant.configure("2") do |config|
     win10.vm.provision "shell", path: "./provisions/windows10Always.ps1", powershell_elevated_interactive: true, run: 'always'
   end
 
-  config.vm.define "macossafari12" do |macos|
+  config.vm.define "macos" do |macos|
     macos.vm.box = "yzgyyang/macOS-10.14"
-    # macos.vm.network "forwarded_port", guest: 4444, host: 7444
     macos.vm.provider "virtualbox" do |v|
       v.memory = 4096
       v.cpus = 4
