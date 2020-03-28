@@ -6,6 +6,36 @@ Vagrant.configure("2") do |config|
   #   ubuntu.vm.network "forwarded_port", guest: 4444, host: 5444
   # end
 
+  config.vm.define "win10" do |win10|
+    win10.vm.box = "gusztavvargadr/windows-10"
+    win10.vm.box_version = "1909.0.2003-enterprise"
+
+    win10.vm.provider "virtualbox" do |v|
+      v.memory = 2048
+      v.cpus = 4
+
+      v.customize ["modifyvm", :id, "--vram", "128"]
+    end
+
+    win10.vm.network "forwarded_port", guest: 4444, host: 6444
+
+
+
+
+    # Enable auto login for powershell_elevated_interactive to work!
+    # https://gist.github.com/StefanScherer/adbb421dc0adca75b49e0031a99595a5
+    win10.vm.provision "shell", privileged: false, inline: <<-SHELL
+      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name AutoAdminLogon -Value 1
+      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name DefaultUserName -Value "vagrant"
+      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name DefaultPassword -Value "vagrant"
+      Remove-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name AutoAdminLogonCount -Confirm -ErrorAction SilentlyContinue
+    SHELL
+
+    win10.vm.provision "shell", path: "./provisions/windows10.ps1", reboot: true
+
+    win10.vm.provision "shell", path: "./provisions/windows10Always.ps1", powershell_elevated_interactive: true, run: 'always'
+  end
+
   config.vm.define "macossafari12" do |macos|
     macos.vm.box = "yzgyyang/macOS-10.14"
     # macos.vm.network "forwarded_port", guest: 4444, host: 7444
@@ -35,13 +65,13 @@ Vagrant.configure("2") do |config|
     # config.vm.network "public_network", bridge: "en1: Wi-Fi (AirPort)"
 
     # macos.vm.synced_folder ".", "/vagrant", disabled: true
-    
+
     # Use NFS for the shared folder
     macos.vm.synced_folder ".", "/vagrant",
       id: "core",
       :nfs => true,
       :mount_options => ['nolock,vers=3,udp,noatime,actimeo=1,resvport'],
-      
+
     :export_options => ['async,insecure,no_subtree_check,no_acl,no_root_squash']
 
 

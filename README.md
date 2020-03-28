@@ -1,6 +1,7 @@
 # Vagrant webdriver collection 
 
 Inspired by https://github.com/jonashackt/vagrant-macosx/blob/master/Vagrantfile
+See also https://github.com/bacongravy/macinbox
 
 ## Including VMS of:
 * macos mojave with Safari 12 (Must run on macos host!)
@@ -25,11 +26,12 @@ The password for the users is always `vagrant`
 On the guests vms the `/vagrant` path is mapped to the current directory
 
 To ssh the machines: `vagrant ssh 'vmname'`  
+If you want to run webdriver-manager from ssh, you might need to force interactive shell 
 To see the ips of the vms: ... TBD
 
 And you can also access the vms ui via virtualbox ui!
 
-## Safari (and chrome, ff on mac)
+## Safari (12.1.2, chrome, ff on Mojave)
 `vagrant up macossafari12`;   
 The port is: 5444 (`http://localhost:5444/wd/hub`)  
 you will might need to type your root password to complete.  
@@ -41,7 +43,7 @@ webdriver port: 5444
 What's the `webdriver-manager_start.app` is for? https://stackoverflow.com/a/48268988/711152   
 
 ## Edge
-For edge vm: `TBD`;
+`vagrant up win10`;   
 
 Basic selenium node project to try:
 [try_it_script/try_it.js](try_it_script/try_it.js) 

@@ -25,11 +25,12 @@ ffOpts = ffOpts
     // });
 
 let builder = new webdriver.Builder()
-    // .forBrowser(webdriver.Browser.EDGE)
+    .forBrowser(webdriver.Browser.EDGE)
     // .forBrowser(webdriver.Browser.CHROME)
-    .forBrowser(webdriver.Browser.SAFARI)
+    // .forBrowser(webdriver.Browser.SAFARI)
     .setFirefoxOptions(ffOpts)
-    .usingServer('http://localhost:5444/wd/hub');
+    // .usingServer('http://localhost:5444/wd/hub');
+    .usingServer('http://localhost:6444/wd/hub');
 
     const c = builder.getCapabilities();
 
@@ -69,4 +70,3 @@ function sleep(time) {
       setTimeout(res, time);
     });
   }
-  
