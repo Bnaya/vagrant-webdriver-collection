@@ -35,8 +35,9 @@ And you can also access the vms ui via virtualbox ui!
 ## Safari (12.1.2, chrome, ff on Mojave)
 `vagrant up macos`;   
 The port is: 5444 (`http://localhost:5444/wd/hub`)  
-you will might need to type your root password to complete.  
-And you will need to manually enable remote automation option:  
+Due to automation limitations: you need to `vagrant reload macos` after first run, and 
+you will might need to type your root password to complete up/reload, and
+And you will need to manually enable remote automation option after first run:  
 <img src="./safari_allow_remote_anomation.png" height="400px" />
 
 webdriver port: 5444

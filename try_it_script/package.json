@@ -2,7 +2,7 @@
   "name": "try-it-script",
   "version": "1.0.0",
   "description": "",
-  "main": "try-it.js",
+  "main": "try_it.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
