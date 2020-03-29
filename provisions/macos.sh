@@ -19,4 +19,8 @@ brew cask install google-chrome;
 
 npm install -g webdriver-manager && webdriver-manager update;
 
+brew tap xfreebird/utils
+brew install kcpassword
+enable_autologin "vagrant" "vagrant"
+
 echo "Done provisioning script";
