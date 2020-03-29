@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
     :export_options => ['async,insecure,no_subtree_check,no_acl,no_root_squash']
 
 
-    macos.vm.provision "shell", path: "./provisions/macos.sh", privileged: false
+    macos.vm.provision "shell", path: "./provisions/macos.sh", privileged: false, reboot: true
     macos.vm.provision "shell", path: "./provisions/macosAlways.sh", privileged: false, run: 'always'
   end
 
