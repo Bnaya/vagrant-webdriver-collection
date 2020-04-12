@@ -1,3 +1,4 @@
 /.vagrant
 /try_it_script/node_modules
 .DS_Store
+/provisions/._forMacOS.sh
