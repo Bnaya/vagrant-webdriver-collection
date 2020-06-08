@@ -6,15 +6,20 @@ Vagrant.configure("2") do |config|
   #   ubuntu.vm.network "forwarded_port", guest: 4444, host: 5444
   # end
 
+  config.ssh.forward_agent = true
+
   config.vm.define "win10" do |win10|
     win10.vm.box = "gusztavvargadr/windows-10"
-    win10.vm.box_version = "1909.0.2003-enterprise"
+    win10.vm.box_version = "2004.0.2005"
 
     win10.vm.provider "virtualbox" do |v|
       v.memory = 2048
       v.cpus = 4
 
       v.customize ["modifyvm", :id, "--vram", "128"]
+      # v.customize ['setextradata', :id, 'CustomVideoMode1', '1366x768']
+      # not reallly do anything
+      # v.customize ['setextradata', :id, 'GUI/LastGuestSizeHint', '1366x768']
       # NOT WORKING. how can i se resolution ??
       # v.customize ["modifyvm", :id, "setvidmode", "1440 900 32 1"]
     end
@@ -24,10 +29,16 @@ Vagrant.configure("2") do |config|
     # Enable auto login for powershell_elevated_interactive to work!
     # https://gist.github.com/StefanScherer/adbb421dc0adca75b49e0031a99595a5
     win10.vm.provision "shell", privileged: false, inline: <<-SHELL
-      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name AutoAdminLogon -Value 1
-      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name DefaultUserName -Value "vagrant"
-      Set-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name DefaultPassword -Value "vagrant"
-      Remove-ItemProperty "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon" -Name AutoAdminLogonCount -Confirm -ErrorAction SilentlyContinue
+      echo "start auto login reg set"
+      $RegPath = "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
+      $DefaultUsername = "vagrant"
+      $DefaultPassword = "vagrant"
+      $AutoLogonCount = 50
+      Set-ItemProperty $RegPath "AutoAdminLogon" -Value "1" -type String
+      Set-ItemProperty $RegPath "DefaultUsername" -Value "$DefaultUsername" -type String
+      Set-ItemProperty $RegPath "DefaultPassword" -Value "$DefaultPassword" -type String
+      Set-ItemProperty $RegPath "AutoLogonCount" -Value "$AutoLogonCount" -type DWord
+      echo "end auto login reg set"
     SHELL
 
     win10.vm.provision "shell", path: "./provisions/windows10.ps1", reboot: true
@@ -77,6 +88,8 @@ Vagrant.configure("2") do |config|
     macos.vm.provision "shell", path: "./provisions/macosAlways.sh", privileged: false, run: 'always'
   end
 
+# enable gui on vagrant up
+# you can always open gui from virtualbox ui
 #   config.vm.provider "virtualbox" do |v|
 #     v.gui = true
 #   end
