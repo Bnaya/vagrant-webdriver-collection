@@ -23,3 +23,7 @@ refreshenv;
 
 # disable firewall
 netsh advfirewall set allprofiles state off;
+
+# set powershell as openssh default shell
+# https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_server_configuration#configuring-the-default-shell-for-openssh-in-windows
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
