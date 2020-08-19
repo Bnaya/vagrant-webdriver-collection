@@ -42,8 +42,6 @@ And you will need to manually enable remote automation option after first run:
 
 webdriver port: 5444
 
-What's the `webdriver-manager_start.app` is for? https://stackoverflow.com/a/48268988/711152   
-
 ## Edge
 `vagrant up win10`;   
 webdriver port: 6444
